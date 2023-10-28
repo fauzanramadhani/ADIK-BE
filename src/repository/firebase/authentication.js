@@ -1,5 +1,5 @@
 const admin = require('firebase-admin');
-const serviceAccount = require('../../../neo-digital-creation-adik-firebase-adminsdk-9qzbm-db11e4179b.json');
+const serviceAccount = require('../../../firebase-key.json');
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
