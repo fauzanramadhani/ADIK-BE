@@ -1,0 +1,19 @@
+{
+  "name": "adik-be",
+  "version": "1.0.0",
+  "description": "BE for ADIK App",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fauzanramadhani/ADIK-BE.git"
+  },
+  "author": "Fauzan, Daffa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fauzanramadhani/ADIK-BE/issues"
+  },
+  "homepage": "https://github.com/fauzanramadhani/ADIK-BE#readme"
+}
