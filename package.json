@@ -4,7 +4,8 @@
   "description": "BE for ADIK App",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon ./src/server/main-server.js",
+    "lint": "eslint ./src"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,15 @@
   "bugs": {
     "url": "https://github.com/fauzanramadhani/ADIK-BE/issues"
   },
-  "homepage": "https://github.com/fauzanramadhani/ADIK-BE#readme"
+  "homepage": "https://github.com/fauzanramadhani/ADIK-BE#readme",
+  "dependencies": {
+    "@hapi/hapi": "^21.3.2",
+    "@hapi/inert": "^7.1.0",
+    "firebase-admin": "^11.11.0",
+    "nodemon": "^3.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.52.0",
+    "eslint-config-google": "^0.14.0"
+  }
 }
