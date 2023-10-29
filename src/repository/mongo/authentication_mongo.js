@@ -13,7 +13,7 @@ const emitRegister = async (
   const updatedAt = createdAt;
   try {
     const newUser = new UserModel({
-      uid,
+      _id: uid,
       name,
       phoneNumber,
       email,

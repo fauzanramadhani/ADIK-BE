@@ -7,7 +7,7 @@ mongoose.connect(mongoAuth, {useNewUrlParser: true, useUnifiedTopology: true});
 
 // Definisikan model schema dan model untuk koleksi Anda
 const userEntity = new mongoose.Schema({
-  id: String,
+  _id: String,
   name: String,
   phoneNumber: String,
   email: String,
@@ -17,5 +17,5 @@ const userEntity = new mongoose.Schema({
   emailVerified: Boolean,
 });
 
-const UserModel = mongoose.model('Users', userEntity);
+const UserModel = mongoose.model('users', userEntity);
 module.exports = UserModel;

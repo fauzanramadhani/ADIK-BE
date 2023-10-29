@@ -27,7 +27,6 @@ const registerWithEmailHandler = async (request, h) => {
   return new Promise((resolve) => {
     registerWithEmail(
         newUid,
-        payload.name,
         payload.phoneNumber,
         payload.email,
         payload.password,

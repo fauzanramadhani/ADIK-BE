@@ -7,7 +7,6 @@ admin.initializeApp({
 
 const registerWithEmail = (
     uid,
-    displayName,
     phoneNumber,
     email,
     password,
@@ -16,7 +15,6 @@ const registerWithEmail = (
   admin.auth()
       .createUser({
         uid: uid,
-        displayName: displayName,
         phoneNumber, phoneNumber,
         email: email,
         password: password,
