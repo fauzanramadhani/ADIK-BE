@@ -17,5 +17,5 @@ const userEntity = new mongoose.Schema({
   emailVerified: Boolean,
 });
 
-const UserModel = mongoose.model('Users', userEntity);
+const UserModel = mongoose.model('users', userEntity);
 module.exports = UserModel;
