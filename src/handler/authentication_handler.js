@@ -1,8 +1,10 @@
 const {generateUid} = require('../repository/utils/generate-uid.js');
-const {registerWithEmail} = require('../repository/firebase/authentication.js');
+const {registerWithEmail} = require('../repository/firebase/authentication_firebase.js');
+const {emitRegister} = require('../repository/mongo/authentication_mongo.js');
 
 const registerWithEmailHandler = async (request, h) => {
   const contentType = request.headers['content-type'];
+  console.log(contentType);
 
   if (contentType !== 'application/x-www-form-urlencoded') {
     return h.response({
@@ -19,21 +21,45 @@ const registerWithEmailHandler = async (request, h) => {
       message: 'Missing required attributes (name, phoneNumber, address, email, or password)',
     }).code(400);
   }
+
+  const newUid = generateUid(32);
+
   return new Promise((resolve) => {
     registerWithEmail(
-        generateUid(32),
+        newUid,
         payload.name,
         payload.phoneNumber,
         payload.email,
         payload.password,
         (result) => {
           if (result.success) {
-            console.log(result.message);
-            resolve(
-                h.response({
-                  status: 'success',
-                  message: result.message,
-                }).code(201),
+            emitRegister(
+                newUid,
+                payload.name,
+                payload.phoneNumber,
+                payload.email,
+                'email',
+                false,
+                (emit) => {
+                  if (emit.success) {
+                    resolve(
+                        h.response({
+                          status: 'success',
+                          message: emit.message,
+                          data: {
+                            uid: newUid,
+                          },
+                        }).code(201),
+                    );
+                  } else {
+                    resolve(
+                        h.response({
+                          status: 'error',
+                          message: emit.message,
+                        }).code(400),
+                    );
+                  }
+                },
             );
           } else {
             resolve(
