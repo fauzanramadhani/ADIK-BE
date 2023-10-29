@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
-const {mongoKey} = require('../../../mongo-key.js');
+const {mongoAuth} = require('../../../mongo-key.js');
 
 // Hubungkan ke server MongoDB (dalam hal ini,
 // "mongo" adalah nama layanan yang Anda tentukan di Docker Compose)
-mongoose.connect(mongoKey, {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(mongoAuth, {useNewUrlParser: true, useUnifiedTopology: true});
 
 // Definisikan model schema dan model untuk koleksi Anda
 const userEntity = new mongoose.Schema({
