@@ -1,7 +1,6 @@
 node_modules
 .dockerignore
 .eslintrc.json
-.gitignore
 docker-compose.yaml
 Dockerfile
 package-lock.json
