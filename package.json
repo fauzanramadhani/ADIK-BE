@@ -2,16 +2,17 @@
   "name": "absen-digital-kantor",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js",
-    "dev": "nodemon index.js"
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Daffa Habibullah",
   "license": "ISC",
   "dependencies": {
+    "@prisma/client": "^5.5.2",
     "express": "^4.18.2",
     "firebase-admin": "^11.11.0",
     "mongodb": "^6.2.0"
