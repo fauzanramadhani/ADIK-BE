@@ -1,16 +1,16 @@
 require("dotenv").config();
 
-const moongose = require("mongoose");
+const mongoose = require("mongoose");
 
 const mongoURL = process.env.MONGO_URL;
 
-moongose.connect(mongoURL, {
+mongoose.connect(mongoURL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
 });
 
-const mongoDB = moongose.connection;
+const mongoDB = mongoose.connection;
 
 mongoDB.on("error", console.error.bind(console, "connection error:"));
 mongoDB.once("open", () => {

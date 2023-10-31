@@ -23,6 +23,8 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
       MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
       TZ: Asia/Jakarta
+    volumes:
+      - mongo-data:/data/db
 
   mongo-express:
     image: mongo-express:latest
@@ -39,3 +41,7 @@ services:
       ME_CONFIG_BASICAUTH_PASSWORD: ${ME_CONFIG_BASICAUTH_PASSWORD}
     depends_on:
       - mongodb
+
+volumes:
+  mongo-data:
+    driver: local
