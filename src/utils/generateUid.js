@@ -1,3 +1,5 @@
+// Jangan dihapus, ini untuk generate random uid kedepannya.
+
 const generateUid = (size) => {
   const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
   const charactersLength = characters.length;
