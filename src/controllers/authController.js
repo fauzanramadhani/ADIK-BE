@@ -1,4 +1,4 @@
-const UserDao = require('../dao/userDao');
+const AuthOdm = require('../odm/authOdm');
 const {generateUid} = require('../utils/generateUid.js');
 const createNewUser = require('../repository/mongodb/createNewUser.js');
 const setEmailVerified = require('../repository/firebase/setEmailVerified.js');
@@ -6,8 +6,8 @@ const setEmailVerified = require('../repository/firebase/setEmailVerified.js');
 const register = async (req, res) => {
   try {
     const newMongoUid = generateUid(32);
-    const {firebaseUid, name, email, phoneNumber, loginMethod} = req.body;
-    const findByEmail = await UserDao.findOne({email: email});
+    const {firebaseUid, email, loginMethod} = req.body;
+    const findByEmail = await AuthOdm.findOne({email: email});
 
     if (findByEmail) {
       const updatedData = {
@@ -17,42 +17,34 @@ const register = async (req, res) => {
         },
         emailVerified: true,
       };
-      await UserDao.updateOne(
+      await AuthOdm.updateOne(
           {_id: findByEmail._id},
           updatedData,
       );
-      const updatedUser = await UserDao.findOne({_id: findByEmail._id});
+      const updatedUser = await AuthOdm.findOne({_id: findByEmail._id});
       updatedUser.firebaseUid.forEach(async (uid) => {
         await setEmailVerified(true, uid);
       });
       res.status(200).json({
         status: 'success',
-        message: `Linked user ${email}`,
+        message: `${email} linked successfully with ${loginMethod}`,
         data: updatedUser,
       });
     } else {
-      const createNewUserCallback = await new Promise((resolve, reject) => {
-        createNewUser(
-            newMongoUid,
-            firebaseUid,
-            email,
-            name,
-            phoneNumber,
-            loginMethod,
-            (result) => {
-              resolve(result);
-            },
-        );
-      });
-
+      const result = await createNewUser(
+          newMongoUid,
+          firebaseUid,
+          email,
+          loginMethod,
+      );
       res.status(200).json({
         status: 'success',
-        message: `New user ${email} created`,
-        data: createNewUserCallback.data,
+        message: `successfully created new user ${email}`,
+        data: result,
       });
     }
   } catch (err) {
-    res.status(200).json({
+    res.status(400).json({
       status: 'error',
       message: err.message,
     });

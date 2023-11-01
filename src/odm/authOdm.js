@@ -1,6 +1,6 @@
 const mongoose = require('../config/mongodb');
 
-const userSchema = new mongoose.Schema({
+const authSchema = new mongoose.Schema({
   _id: {
     type: String,
     required: true,
@@ -12,18 +12,6 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
-  },
-  name: {
-    type: String,
-    required: true,
-    minlength: 3,
-    maxlength: 50,
-  },
-  phoneNumber: {
-    type: String,
-    required: true,
-    minlength: 12,
-    maxlength: 14,
   },
   loginMethod: {
     type: Array,
@@ -43,7 +31,7 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-const UserDao = mongoose.model('users', userSchema);
+const AuthOdm = mongoose.model('users_auth', authSchema);
 
 
-module.exports = UserDao;
+module.exports = AuthOdm;

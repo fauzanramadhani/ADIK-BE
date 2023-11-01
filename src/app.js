@@ -16,4 +16,8 @@ const authRoute = require('./routes/authRoute');
 
 app.use('/auth', authRoute);
 
+const profileRoute = require('./routes/profileRoute');
+
+app.use('/profile', profileRoute);
+
 module.exports = app;

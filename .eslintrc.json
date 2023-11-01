@@ -1,7 +1,6 @@
 {
     "env": {
         "browser": true,
-        "commonjs": true,
         "es2021": true
     },
     "extends": "google",
@@ -9,7 +8,5 @@
         "ecmaVersion": "latest"
     },
     "rules": {
-        "max-len": "off",
-        "new-cap": "off"
     }
 }
