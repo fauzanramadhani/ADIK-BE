@@ -5,42 +5,46 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: adik/express-mongo:beta
-    container_name: app-container
+    image: fauzanramadhani06/adik-be:beta
+    container_name: adik-app-container
     ports:
-      - "9000:9000"
-    command: npm start
+      - "${APP_PORT}:${APP_PORT}"
+    expose:
+      - ${APP_PORT}
+    restart: always
+    volumes:
+      - .:/usr/src/app/
+      - /usr/src/app/node_modules
     depends_on:
-      - mongodb
+      - "mongo"
 
-  mongodb:
-    image: mongo:latest
-    container_name: mongodb-container
+  mongo:
+    image: mongo:4
+    container_name: adik-mongo-container
     ports:
-      - "27017:27017"
+      - "${MONGO_EXPOSE_PORT}:27017"
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
-      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
       TZ: Asia/Jakarta
     volumes:
       - mongo-data:/data/db
 
   mongo-express:
     image: mongo-express:latest
-    container_name: mongo-express-container
+    container_name: adik-mongo-express-container
     ports:
-      - "8081:8081"
+      - "${ME_EXPOSE_PORT}:8081"
     environment:
-      ME_CONFIG_MONGODB_SERVER: ${ME_CONFIG_MONGODB_SERVER}
-      ME_CONFIG_MONGODB_PORT: ${ME_CONFIG_MONGODB_PORT}
-      ME_CONFIG_MONGODB_ENABLE_ADMIN: ${ME_CONFIG_MONGODB_ENABLE_ADMIN}
-      ME_CONFIG_MONGODB_ADMINUSERNAME: ${ME_CONFIG_MONGODB_ADMINUSERNAME}
-      ME_CONFIG_MONGODB_ADMINPASSWORD: ${ME_CONFIG_MONGODB_ADMINPASSWORD}
+      ME_CONFIG_MONGODB_SERVER: "mongo"
+      ME_CONFIG_MONGODB_PORT: 27017
+      ME_CONFIG_MONGODB_ENABLE_ADMIN: "true"
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
       ME_CONFIG_BASICAUTH_USERNAME: ${ME_CONFIG_BASICAUTH_USERNAME}
       ME_CONFIG_BASICAUTH_PASSWORD: ${ME_CONFIG_BASICAUTH_PASSWORD}
     depends_on:
-      - mongodb
+      - "mongo"
 
 volumes:
   mongo-data:

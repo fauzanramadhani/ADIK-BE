@@ -1,13 +1,15 @@
-FROM node:17
+FROM node:slim
 
 WORKDIR /usr/src/app
 
-COPY package*.json ./
+COPY package.json /usr/src/app/
 
 RUN npm install
 
 COPY . .
 
-EXPOSE 9000
+ARG APP_PORT
+EXPOSE ${APP_PORT}
 
-CMD ["npm", "server.js"]
+#Untuk development, supaya bisa pakai nodemon
+CMD [ "npm", "start" ]

@@ -1,61 +1,64 @@
-const User = require("../models/usersModel");
-
-const firebaseAdmin = require("../config/firebase");
-
+const UserDao = require('../dao/userDao');
+const {generateUid} = require('../utils/generateUid.js');
+const createNewUser = require('../repository/mongodb/createNewUser.js');
+const setEmailVerified = require('../repository/firebase/setEmailVerified.js');
 
 const register = async (req, res) => {
-    try {
-        const {name, email, phoneNumber, password} = req.body;
+  try {
+    const newMongoUid = generateUid(32);
+    const {firebaseUid, name, email, phoneNumber, loginMethod} = req.body;
+    const findByEmail = await UserDao.findOne({email: email});
 
-        const user = await firebaseAdmin.auth().createUser({
+    if (findByEmail) {
+      const updatedData = {
+        $addToSet: {
+          firebaseUid: firebaseUid,
+          loginMethod: loginMethod,
+        },
+        emailVerified: true,
+      };
+      await UserDao.updateOne(
+          {_id: findByEmail._id},
+          updatedData,
+      );
+      const updatedUser = await UserDao.findOne({_id: findByEmail._id});
+      updatedUser.firebaseUid.forEach(async (uid) => {
+        await setEmailVerified(true, uid);
+      });
+      res.status(200).json({
+        status: 'success',
+        message: `Linked user ${email}`,
+        data: updatedUser,
+      });
+    } else {
+      const createNewUserCallback = await new Promise((resolve, reject) => {
+        createNewUser(
+            newMongoUid,
+            firebaseUid,
             email,
-            phoneNumber,
-            password,
-        });
-
-        const newUser = new User({
-            _id: user.uid,
             name,
-            email,
             phoneNumber,
-            loginMethod: "email",
-            emailVerified: user.emailVerified,
-        });
+            loginMethod,
+            (result) => {
+              resolve(result);
+            },
+        );
+      });
 
-        await newUser.save();
-
-        res.status(201).json({
-            message: "User created successfully",
-            data: newUser,
-        });
-    } catch (err) {
-        res.status(400).json({
-            message: err.message,
-        });
+      res.status(200).json({
+        status: 'success',
+        message: `New user ${email} created`,
+        data: createNewUserCallback.data,
+      });
     }
+  } catch (err) {
+    res.status(200).json({
+      status: 'error',
+      message: err.message,
+    });
+  }
 };
 
-const login = async (req, res) => {
-    try {
-        const {email, password} = req.body;
-
-        const user = await firebaseAdmin.auth().getUserByEmail(email);
-
-        if (user.emailVerified === false) {
-            throw new Error("Email not verified");
-        }
-
-        await firebaseAdmin.auth().signInWithEmailAndPassword(email, password);
-
-        res.status(200).json({
-            message: "Login successful",
-        });
-    } catch (err) {
-        res.status(400).json({
-            message: err.message,
-        });
-    }
+module.exports = {
+  register,
 };
-
-
-module.exports = {register, login};
