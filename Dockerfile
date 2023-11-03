@@ -1,13 +1,13 @@
-FROM node:17
+FROM node:slim
 
 WORKDIR /usr/src/app
 
-COPY package*.json ./
+COPY package*.json /usr/src/app/
 
 RUN npm install
 
 COPY . .
 
-EXPOSE 9000
+EXPOSE 5000
 
 CMD ["npm", "server.js"]

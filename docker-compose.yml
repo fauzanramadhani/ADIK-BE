@@ -6,16 +6,20 @@ services:
       context: .
       dockerfile: Dockerfile
     image: adik/express-mongo:beta
-    container_name: app-container
+    container_name: adik-app-container
     ports:
-      - "9000:9000"
+      - "9000:5000"
     command: npm start
+    restart: always
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
     depends_on:
       - mongodb
 
   mongodb:
-    image: mongo:latest
-    container_name: mongodb-container
+    image: mongo:4
+    container_name: adik-mongodb-container
     ports:
       - "27017:27017"
     environment:

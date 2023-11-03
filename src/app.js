@@ -8,12 +8,15 @@ const authRoute = require("./routes/authRoute");
 
 app.use(cors());
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 
+// Home route
 app.get("/", (req, res) => {
-    res.send("Hello World!");
+    res.send("Server is up and running");
 });
 
-app.use("/auth", authRoute);
+// Routes
+app.use("/user", authRoute);
 
 
 module.exports = app;

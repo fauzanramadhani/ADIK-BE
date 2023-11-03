@@ -1,12 +1,8 @@
 const mongoose = require("../config/mongodb");
 
-const userSchema = new mongoose.Schema({
+const profileSchema = new mongoose.Schema({
     _id: {
         type: String,
-        required: true,
-    },
-    firebaseUids: {
-        type: Array,
         required: true,
     },
     profilePicture: {
@@ -19,11 +15,6 @@ const userSchema = new mongoose.Schema({
         minlength: 2,
         maxlength: 100,
     },
-    email: {
-        type: String,
-        unique: true,
-        required: true,
-    },
     phoneNumber: {
         type: String,
         unique: true,
@@ -31,26 +22,23 @@ const userSchema = new mongoose.Schema({
         minlength: 11,
         maxlength: 13,
     },
-    loginMethods: {
-        type: Array,
-    },
     address: {
         type: String,
         required: true,
         minlength: 10,
         maxlength: 200,
     },
-    officeIds: {
-        type: Array,
-        required: true,
-    },
     createdAt: {
         type: Date,
         default: Date.now,
     },
+    updatedAt: {
+        type: String,
+        default: Date.now,
+    },
 });
 
-const UserModel = mongoose.model("Users", userSchema);
+const ProfileModel = mongoose.model("Profiles", profileSchema);
 
 
-module.exports = UserModel;
+module.exports = ProfileModel;

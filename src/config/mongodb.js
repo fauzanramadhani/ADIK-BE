@@ -7,7 +7,6 @@ const mongoURL = process.env.MONGO_URL;
 mongoose.connect(mongoURL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useCreateIndex: true,
 });
 
 const mongoDB = mongoose.connection;
@@ -18,4 +17,4 @@ mongoDB.once("open", () => {
 });
 
 
-module.exports = mongoDB;
+module.exports = mongoose;
