@@ -15,19 +15,16 @@ const userSchema = new mongoose.Schema({
     },
     name: {
         type: String,
-        required: true,
         minlength: 2,
         maxlength: 100,
     },
     email: {
         type: String,
         unique: true,
-        required: true,
     },
     phoneNumber: {
         type: String,
         unique: true,
-        required: true,
         minlength: 11,
         maxlength: 13,
     },
@@ -36,13 +33,11 @@ const userSchema = new mongoose.Schema({
     },
     address: {
         type: String,
-        required: true,
         minlength: 10,
         maxlength: 200,
     },
     officeIds: {
         type: Array,
-        required: true,
     },
     createdAt: {
         type: Date,

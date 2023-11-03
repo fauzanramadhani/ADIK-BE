@@ -7,13 +7,11 @@ const officeSchema = new mongoose.Schema({
     },
     name: {
         type: String,
-        required: true,
         minlength: 2,
         maxlength: 100,
     },
     address: {
         type: String,
-        required: true,
         minlength: 10,
         maxlength: 200,
     },

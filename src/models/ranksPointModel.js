@@ -7,11 +7,9 @@ const ranksPointSchema = new mongoose.Schema({
     },
     memberId: {
         type: String,
-        required: true,
     },
     point: {
         type: Number,
-        required: true,
     },
 });
 

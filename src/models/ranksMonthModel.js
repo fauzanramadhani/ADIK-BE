@@ -7,7 +7,6 @@ const ranksMonthSchema = new mongoose.Schema({
     },
     month: {
         type: Number,
-        required: true,
     },
     rankingPointIds: {
         type: Array,

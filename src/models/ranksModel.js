@@ -7,7 +7,6 @@ const rankSchema = new mongoose.Schema({
     },
     year: {
         type: Number,
-        required: true,
         minlength: 4,
         maxlength: 4,
     },
