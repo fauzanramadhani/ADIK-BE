@@ -12,7 +12,7 @@ const divisionSchema = new mongoose.Schema({
         type: Array,
     },
     createdAt: {
-        type: Date,
+        type: String,
         default: Date.now,
     },
 });

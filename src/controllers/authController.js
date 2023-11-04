@@ -1,61 +1,46 @@
-const User = require("../models/usersModel");
+const UserModel = require("../models/usersModel");
+const generateUid = require("../utils/generateUid");
+const createNewUser = require("../middleware/mongodb/createNewUser");
 
-const firebaseAdmin = require("../config/firebase");
 
+const auth = async (req, res) => {
+    const {email, loginMethods, firebaseUid} = req.body;
 
-const register = async (req, res) => {
     try {
-        const {name, email, phoneNumber, password} = req.body;
+        let user = await UserModel.findOne({email});
 
-        const user = await firebaseAdmin.auth().createUser({
-            email,
-            phoneNumber,
-            password,
-        });
-
-        const newUser = new User({
-            _id: user.uid,
-            name,
-            email,
-            phoneNumber,
-            loginMethod: "email",
-            emailVerified: user.emailVerified,
-        });
-
-        await newUser.save();
-
-        res.status(201).json({
-            message: "User created successfully",
-            data: newUser,
-        });
-    } catch (err) {
-        res.status(400).json({
-            message: err.message,
-        });
-    }
-};
-
-const login = async (req, res) => {
-    try {
-        const {email, password} = req.body;
-
-        const user = await firebaseAdmin.auth().getUserByEmail(email);
-
-        if (user.emailVerified === false) {
-            throw new Error("Email not verified");
+        if (!user) {
+            const newMongoId = generateUid(32);
+            user = await createNewUser(newMongoId, firebaseUid, email, loginMethods);
+            return res.status(200).json({
+                status: "success",
+                message: "User created successfully",
+                data: user,
+            });
+        } else {
+            if (!user.loginMethods.includes(loginMethods)) {
+                user.loginMethods.push(loginMethods);
+                await user.save();
+                return res.status(200).json({
+                    status: "success",
+                    message: "User login successfully with a new login method",
+                    data: user,
+                });
+            } else {
+                return res.status(200).json({
+                    status: "success",
+                    message: "User login successfully",
+                    data: user,
+                });
+            }
         }
-
-        await firebaseAdmin.auth().signInWithEmailAndPassword(email, password);
-
-        res.status(200).json({
-            message: "Login successful",
-        });
-    } catch (err) {
-        res.status(400).json({
-            message: err.message,
+    } catch (error) {
+        return res.status(400).json({
+            status: "error",
+            message: error.message,
         });
     }
 };
 
 
-module.exports = {register, login};
+module.exports = {auth};

@@ -4,12 +4,10 @@ const userSchema = new mongoose.Schema({
     _id: {
         type: String,
         required: true,
-        unique: true,
     },
     firebaseUids: {
         type: Array,
         required: true,
-        unique: true,
     },
     profilePicture: {
         type: String,
@@ -20,11 +18,9 @@ const userSchema = new mongoose.Schema({
     },
     email: {
         type: String,
-        unique: true,
     },
     phoneNumber: {
         type: String,
-        unique: true,
     },
     loginMethods: {
         type: Array,
@@ -36,7 +32,7 @@ const userSchema = new mongoose.Schema({
         type: Array,
     },
     createdAt: {
-        type: Date,
+        type: String,
         default: Date.now,
     },
 });

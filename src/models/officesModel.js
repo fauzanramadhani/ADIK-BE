@@ -24,7 +24,7 @@ const officeSchema = new mongoose.Schema({
         type: Array,
     },
     createdAt: {
-        type: Date,
+        type: String,
         default: Date.now,
     },
 });
