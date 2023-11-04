@@ -7,8 +7,6 @@ const rankSchema = new mongoose.Schema({
     },
     year: {
         type: Number,
-        minlength: 4,
-        maxlength: 4,
     },
     rankingMonthIds: {
         type: Array,

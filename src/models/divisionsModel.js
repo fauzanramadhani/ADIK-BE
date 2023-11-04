@@ -7,8 +7,6 @@ const divisionSchema = new mongoose.Schema({
     },
     name: {
         type: String,
-        minlength: 2,
-        maxlength: 100,
     },
     memberIds: {
         type: Array,

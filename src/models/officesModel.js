@@ -7,13 +7,9 @@ const officeSchema = new mongoose.Schema({
     },
     name: {
         type: String,
-        minlength: 2,
-        maxlength: 100,
     },
     address: {
         type: String,
-        minlength: 10,
-        maxlength: 200,
     },
     ownerIds: {
         type: Array,
