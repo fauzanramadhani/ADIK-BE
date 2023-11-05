@@ -8,7 +8,7 @@ const createNewUser = async (
         _id: mongoId,
         firebaseUids: [firebaseUid],
         email,
-        loginMethods,
+        loginMethods: [loginMethods],
         createdAt,
     });
     await newUser.save();

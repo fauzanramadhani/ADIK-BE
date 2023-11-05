@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
         type: Array,
         required: true,
     },
-    profilePicture: {
+    imageProfileUrl: {
         type: String,
         default: "http://localhost:9000/images/defaultImg.jpeg",
     },
