@@ -1,3 +1,4 @@
+require("dotenv").config();
 const mongoose = require("../config/mongodb");
 
 const userSchema = new mongoose.Schema({
@@ -11,7 +12,7 @@ const userSchema = new mongoose.Schema({
     },
     imageProfileUrl: {
         type: String,
-        default: "http://localhost:9000/images/defaultImg.jpeg",
+        default: process.env.BASE_URL + "public/images/default/default.jpeg",
     },
     name: {
         type: String,

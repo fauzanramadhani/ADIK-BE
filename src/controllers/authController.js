@@ -1,6 +1,6 @@
 const UserModel = require("../models/usersModel");
-const generateUid = require("../utils/generateUid");
 const createNewUser = require("../middleware/mongodb/createNewUser");
+const generateUid = require("../utils/generateUid");
 
 
 const auth = async (req, res) => {

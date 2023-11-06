@@ -8,7 +8,7 @@ services:
     image: adik/express-mongo:beta
     container_name: adik-app-container
     ports:
-      - "9000:5000"
+      - ${PORT_APP}:5000
     command: npm start
     restart: always
     volumes:
@@ -21,7 +21,7 @@ services:
     image: mongo:4
     container_name: adik-mongodb-container
     ports:
-      - "27017:27017"
+      - ${PORT_MONGODB}:27017
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
@@ -34,7 +34,7 @@ services:
     image: mongo-express:latest
     container_name: mongo-express-container
     ports:
-      - "8081:8081"
+      - ${PORT_MONGODB_EXPRESS}:8081
     environment:
       ME_CONFIG_MONGODB_SERVER: ${ME_CONFIG_MONGODB_SERVER}
       ME_CONFIG_MONGODB_PORT: ${ME_CONFIG_MONGODB_PORT}
