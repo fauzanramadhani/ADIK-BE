@@ -1,17 +1,20 @@
-require('dotenv').config();
+require("dotenv").config();
 
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const mongoUsername = process.env.MONGO_INITDB_ROOT_USERNAME;
-const mongoPassword = process.env.MONGO_INITDB_ROOT_PASSWORD;
+const mongoURL = process.env.MONGO_URL;
 
-const mongoAuth = `mongodb://${mongoUsername}:${mongoPassword}@mongo:27017/adik?authSource=admin`;
+mongoose.connect(mongoURL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+});
 
-mongoose.connect(
-    mongoAuth, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    },
-);
+const mongoDB = mongoose.connection;
+
+mongoDB.on("error", console.error.bind(console, "connection error:"));
+mongoDB.once("open", () => {
+    console.log("Database connected");
+});
+
 
 module.exports = mongoose;

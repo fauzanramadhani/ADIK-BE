@@ -1,16 +1,14 @@
-// Jangan dihapus, ini untuk generate random uid kedepannya.
+const generateUid = (length) => {
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    const charsLength = chars.length;
+    let uid = "";
 
-const generateUid = (size) => {
-  const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
-  const charactersLength = characters.length;
-  let uid = '';
+    for (let i = 0; i < length; i++) {
+        uid += chars.charAt(Math.floor(Math.random() * charsLength));
+    }
 
-  for (let i = 0; i < size; i++) {
-    const randomIndex = Math.floor(Math.random() * charactersLength);
-    uid += characters.charAt(randomIndex);
-  }
-
-  return uid;
+    return uid;
 };
 
-module.exports = {generateUid};
+
+module.exports = generateUid;

@@ -1,23 +1,34 @@
-const express = require('express');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-require('dotenv').config();
+const express = require("express");
+const cors = require("cors");
+const bodyParser = require("body-parser");
 
 const app = express();
-app.use(bodyParser.urlencoded({extended: true}));
+
+const authRoute = require("./routes/authRoute");
+// const profileRoute = require("./routes/profileRoute");
+// const getImageProfile = require("../accessImgProfile");
+
 app.use(cors());
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
+// Home route
+app.get("/", (req, res) => {
+    res.send("Server is up and running");
 });
 
-const authRoute = require('./routes/authRoute');
+app.get("/public/images/default/:filename", (req, res) => {
+    const {filename} = req.params;
 
-app.use('/auth', authRoute);
+    return res.sendFile(__dirname + "/public/images/default/" + filename);
+});
 
-const profileRoute = require('./routes/profileRoute');
+// app.get("/uploads/images/profiles/:filename", getImageProfile);
 
-app.use('/profile', profileRoute);
+
+// Routes
+app.use("/user", authRoute);
+// app.use("/user", profileRoute);
+
 
 module.exports = app;
