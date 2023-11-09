@@ -17,7 +17,9 @@ const auth = async (req, res) => {
             return res.status(200).json({
                 status: "success",
                 message: "User created successfully",
-                data: user,
+                data: {
+                    userMongoId: user._id,
+                },
             });
         } else {
             if (!user.loginMethods.includes(loginMethods) && !user.firebaseUids.includes(firebaseUid)) {
@@ -29,13 +31,17 @@ const auth = async (req, res) => {
                 return res.status(200).json({
                     status: "success",
                     message: "User login successfully with a new login method",
-                    data: user,
+                    data: {
+                        userMongoId: user._id,
+                    },
                 });
             } else {
                 return res.status(200).json({
                     status: "success",
                     message: "User login successfully",
-                    data: user,
+                    data: {
+                        userMongoId: user._id,
+                    },
                 });
             }
         }
