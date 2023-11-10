@@ -18,7 +18,7 @@ const auth = async (req, res) => {
                 status: "success",
                 message: "User created successfully",
                 data: {
-                    userMongoId: user._id
+                    userMongoId: user._id,
                 },
             });
         } else {
@@ -26,6 +26,22 @@ const auth = async (req, res) => {
                 user.loginMethods.push(loginMethods);
                 user.firebaseUids.push(firebaseUid);
                 await user.save();
+
+                return res.status(200).json({
+                    status: "success",
+                    message: "User login successfully with a new login method",
+                    data: {
+                        userMongoId: user._id,
+                    },
+                });
+            } else {
+                return res.status(200).json({
+                    status: "success",
+                    message: "User login successfully",
+                    data: {
+                        userMongoId: user._id,
+                    },
+                });
             }
             return res.status(200).json({
                 status: "success",
