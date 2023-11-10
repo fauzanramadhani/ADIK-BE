@@ -8,19 +8,25 @@ const officeSchema = new mongoose.Schema({
     name: {
         type: String,
     },
+    officeImageUrl: {
+        type: String,
+    },
     address: {
         type: String,
     },
-    ownerIds: {
+    locationId: {
         type: Array,
     },
-    memberIds: {
+    officeMemberId: {
         type: Array,
     },
-    rankingIds: {
+    rankingId: {
         type: Array,
     },
-    divisionIds: {
+    divisionId: {
+        type: Array,
+    },
+    shiftId: {
         type: Array,
     },
     createdAt: {
@@ -29,7 +35,7 @@ const officeSchema = new mongoose.Schema({
     },
 });
 
-const OfficeModel = mongoose.model("Offices", officeSchema);
+const OfficeModel = mongoose.model("Office", officeSchema);
 
 
 module.exports = OfficeModel;
