@@ -5,8 +5,8 @@ const bodyParser = require("body-parser");
 const app = express();
 
 const authRoute = require("./routes/authRoute");
-// const profileRoute = require("./routes/profileRoute");
-// const getImageProfile = require("../accessImgProfile");
+const profileRoute = require("./routes/profileRoute");
+const getImageProfile = require("../accessImgProfile");
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -23,12 +23,12 @@ app.get("/public/images/default/:filename", (req, res) => {
     return res.sendFile(__dirname + "/public/images/default/" + filename);
 });
 
-// app.get("/uploads/images/profiles/:filename", getImageProfile);
+app.get("/uploads/images/profiles/:filename", getImageProfile);
 
 
 // Routes
 app.use("/user", authRoute);
-// app.use("/user", profileRoute);
+app.use("/user", profileRoute);
 
 
 module.exports = app;
