@@ -2,18 +2,18 @@ version: '3'
 
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
     image: fauzanramadhani06/adik-app:beta
     container_name: adik-app-container
     ports:
       - "5000:5000"
     command: npm start
     restart: always
-    volumes:
-      - .:/usr/src/app/
-      - /usr/src/app/node_modules
+    # volumes:
+    #   - .:/usr/src/app/
+    #   - /usr/src/app/node_modules
     depends_on:
       - mongodb
 
