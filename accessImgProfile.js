@@ -1,7 +1,7 @@
 const getImageProfile = (req, res) => {
-    const {filename} = req.params;
+    const {userMongoId, filename} = req.params;
 
-    return res.sendFile(`${__dirname}/uploads/images/profiles/${filename}`);
+    return res.sendFile(`${__dirname}/uploads/images/profiles/${userMongoId}/${filename}`);
 };
 
 

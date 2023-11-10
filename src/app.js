@@ -23,7 +23,7 @@ app.get("/public/images/default/:filename", (req, res) => {
     return res.sendFile(__dirname + "/public/images/default/" + filename);
 });
 
-app.get("/uploads/images/profiles/:filename", getImageProfile);
+app.get("/uploads/images/profiles/:userMongoId/:filename", getImageProfile);
 
 
 // Routes
