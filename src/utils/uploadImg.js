@@ -1,7 +1,13 @@
 const multer = require("multer");
+const fs = require("fs");
+
 
 const storage = multer.diskStorage({
-    destination: "uploads/images/profiles/",
+    destination: (req, file, cb) => {
+        const dir = `uploads/images/profiles/${req.user._id}`;
+        fs.mkdirSync(dir, {recursive: true});
+        cb(null, dir);
+    },
     filename: (req, file, cb) => {
         cb(null, Date.now() + "-" + file.originalname.replace(/\s/g, "-"));
     },
