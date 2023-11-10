@@ -29,7 +29,7 @@ const userSchema = new mongoose.Schema({
     address: {
         type: String,
     },
-    officeIds: {
+    officeId: {
         type: Array,
     },
     createdAt: {
