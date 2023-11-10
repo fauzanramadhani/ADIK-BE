@@ -22,10 +22,9 @@ const auth = async (req, res) => {
                 },
             });
         } else {
-            if (!user.loginMethods.includes(loginMethods) && !user.firebaseUids.includes(firebaseUid)) {
+            if (!user.loginMethods.includes(loginMethods)) {
                 user.loginMethods.push(loginMethods);
                 user.firebaseUids.push(firebaseUid);
-
                 await user.save();
 
                 return res.status(200).json({
@@ -44,6 +43,13 @@ const auth = async (req, res) => {
                     },
                 });
             }
+            return res.status(200).json({
+                status: "success",
+                message: "User login successfully",
+                data: {
+                    userMongoId: user._id
+                },
+            });
         }
     } catch (error) {
         return res.status(400).json({
@@ -54,4 +60,5 @@ const auth = async (req, res) => {
 };
 
 
+module.exports = {auth};
 module.exports = {auth};

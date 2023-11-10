@@ -131,3 +131,6 @@ dist
 
 # uploads
 uploads/
+
+# SSH
+NDC-ADIK-DEVELOP.pem
