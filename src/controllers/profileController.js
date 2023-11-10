@@ -28,40 +28,19 @@ const getProfile = async (req, res) => {
 
 const putProfile = async (req, res) => {
     try {
-        upload.single("imageProfileUrl")(req, res, async (error) => {
-            if (error) {
-                return res.status(400).json({
-                    status: "error",
-                    message: error.message,
-                });
-            }
+        const {imageProfileUrl, name, phoneNumber, address} = req.body;
+        const user = req.user;
 
-            const {name, phoneNumber, address} = req.body;
-            const {file} = req;
-            const user = req.user;
+        user.imageProfileUrl = imageProfileUrl;
+        user.name = name;
+        user.phoneNumber = phoneNumber;
+        user.address = address;
 
-            user.name = name;
-            user.phoneNumber = phoneNumber;
-            user.address = address;
+        await user.save();
 
-            if (file) {
-                user.imageProfileUrl = process.env.BASE_URL + file.path.replace("src/", "");
-            }
-
-            await user.save();
-
-            return res.status(200).json({
-                status: "success",
-                message: "User profile updated successfully",
-                // data: {
-                //     imageProfileUrl: user.imageProfileUrl,
-                //     name: user.name,
-                //     phoneNumber: user.phoneNumber,
-                //     address: user.address,
-                //     officeId: user.officeId,
-                //     createdAt: user.createdAt,
-                // },
-            });
+        return res.status(200).json({
+            status: "success",
+            message: "User profile updated successfully",
         });
     } catch (error) {
         return res.status(400).json({
