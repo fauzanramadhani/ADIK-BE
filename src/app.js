@@ -7,6 +7,7 @@ const app = express();
 const authRoute = require("./routes/authRoute");
 const profileRoute = require("./routes/profileRoute");
 const getImageProfile = require("../accessImgProfile");
+const officeRoute = require("./routes/officeRoute");
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -29,6 +30,7 @@ app.get("/uploads/images/profiles/:userMongoId/:filename", getImageProfile);
 // Routes
 app.use("/user", authRoute);
 app.use("/user", profileRoute);
+app.use("/office", officeRoute);
 
 
 module.exports = app;
