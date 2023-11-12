@@ -5,18 +5,19 @@ const locationSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    createdAt: {
-        type: String,
-        default: new Date().toISOString(),
-    },
     latitude: {
         type: String,
     },
     longitude: {
         type: String,
     },
+    createdAt: {
+        type: String,
+        default: new Date().toISOString(),
+    },
 });
 
 const LocationModel = mongoose.model("tb_location", locationSchema);
+
 
 module.exports = LocationModel;

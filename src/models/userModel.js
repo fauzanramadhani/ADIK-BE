@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    firebaseUids: {
+    firebaseUid: {
         type: Array,
         required: true,
     },
@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema({
     phoneNumber: {
         type: String,
     },
-    loginMethods: {
+    loginMethod: {
         type: Array,
     },
     address: {
@@ -34,11 +34,11 @@ const userSchema = new mongoose.Schema({
     },
     createdAt: {
         type: String,
-        default: Date.now,
+        default: new Date().toISOString(),
     },
 });
 
-const UserModel = mongoose.model("Users", userSchema);
+const UserModel = mongoose.model("tb_user", userSchema);
 
 
 module.exports = UserModel;
