@@ -1,14 +1,14 @@
-const UserModel = require("../../models/usersModel");
+const UserModel = require("../../models/userModel");
 
 const createNewUser = async (
-    mongoId, firebaseUid, email, loginMethods,
+    userMongoId, firebaseUid, email, loginMethod,
 ) => {
     const createdAt = new Date().toISOString();
     const newUser = new UserModel({
-        _id: mongoId,
-        firebaseUids: [firebaseUid],
+        _id: userMongoId,
+        firebaseUid: [firebaseUid],
         email,
-        loginMethods: [loginMethods],
+        loginMethod: [loginMethod],
         createdAt,
     });
     await newUser.save();
