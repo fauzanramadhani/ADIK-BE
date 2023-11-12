@@ -28,10 +28,9 @@ const getProfile = async (req, res) => {
 
 const putProfile = async (req, res) => {
     try {
-        const {imageProfileUrl, name, phoneNumber, address} = req.body;
         const user = req.user;
+        const {name, phoneNumber, address} = req.body;
 
-        user.imageProfileUrl = imageProfileUrl;
         user.name = name;
         user.phoneNumber = phoneNumber;
         user.address = address;

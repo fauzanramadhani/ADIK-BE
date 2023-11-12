@@ -1,18 +1,18 @@
-const UserModel = require("../models/usersModel");
+const UserModel = require("../models/userModel");
 const createNewUser = require("../middleware/mongodb/createNewUser");
 const generateUid = require("../utils/generateUid");
 
 
 const auth = async (req, res) => {
-    const {email, loginMethods, firebaseUid} = req.body;
+    const {firebaseUid, email, loginMethod} = req.body;
 
     try {
         let user = await UserModel.findOne({email});
 
         if (!user) {
-            const newMongoId = generateUid(32);
+            const newUserMongoId = generateUid(32);
 
-            user = await createNewUser(newMongoId, firebaseUid, email, loginMethods);
+            user = await createNewUser(newUserMongoId, firebaseUid, email, loginMethod);
 
             return res.status(200).json({
                 status: "success",
@@ -22,9 +22,9 @@ const auth = async (req, res) => {
                 },
             });
         } else {
-            if (!user.loginMethods.includes(loginMethods)) {
-                user.loginMethods.push(loginMethods);
-                user.firebaseUids.push(firebaseUid);
+            if (!user.loginMethod.includes(loginMethod)) {
+                user.firebaseUid.push(firebaseUid);
+                user.loginMethod.push(loginMethod);
                 await user.save();
 
                 return res.status(200).json({

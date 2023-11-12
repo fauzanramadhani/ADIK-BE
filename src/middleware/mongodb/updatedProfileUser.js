@@ -1,11 +1,10 @@
 const UserModel = require("../../models/usersModel");
 
 const updatedProfileUser = async (
-    mongoId, imageProfileUrl, name, phoneNumber, address,
+    userMongoId, name, phoneNumber, address,
 ) => {
     const updatedProfile = new UserModel({
-        _id: mongoId,
-        imageProfileUrl,
+        _id: userMongoId,
         name,
         phoneNumber,
         address,
