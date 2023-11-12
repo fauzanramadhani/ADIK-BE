@@ -5,7 +5,7 @@ const checkAuth = async (req, res, next) => {
         const {authorization} = req.headers;
 
         if (!authorization) {
-            return res.status(401).json({message: "You must be logged in"});
+            throw new Error("You must be logged in");
         }
 
         const mongoId = authorization.replace("Bearer ", "");
@@ -13,14 +13,18 @@ const checkAuth = async (req, res, next) => {
         const user = await UserModel.findOne({_id: mongoId});
 
         if (!user) {
-            return res.status(401).json({message: "You must be logged in"});
+            throw new Error("User not found");
         }
 
         req.user = user;
 
         next();
     } catch (error) {
-        return res.status(401).json({message: "You must be logged in"});
+        console.log(error);
+        return res.status(400).json({
+            status: "error",
+            message: error.message,
+        });
     }
 };
 

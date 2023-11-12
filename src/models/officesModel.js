@@ -31,11 +31,11 @@ const officeSchema = new mongoose.Schema({
     },
     createdAt: {
         type: String,
-        default: Date.now,
+        default: new Date().toISOString(),
     },
 });
 
-const OfficeModel = mongoose.model("Office", officeSchema);
+const OfficeModel = mongoose.model("tb_office", officeSchema);
 
 
 module.exports = OfficeModel;

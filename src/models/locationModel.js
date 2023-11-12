@@ -1,6 +1,6 @@
 const mongoose = require("../config/mongodb");
 
-const divisionSchema = new mongoose.Schema({
+const locationSchema = new mongoose.Schema({
     _id: {
         type: String,
         required: true,
@@ -9,14 +9,14 @@ const divisionSchema = new mongoose.Schema({
         type: String,
         default: new Date().toISOString(),
     },
-    name: {
+    latitude: {
         type: String,
     },
-    officeId: {
+    longitude: {
         type: String,
     },
 });
 
-const DivisionModel = mongoose.model("tb_division", divisionSchema);
+const LocationModel = mongoose.model("tb_location", locationSchema);
 
-module.exports = DivisionModel;
+module.exports = LocationModel;
