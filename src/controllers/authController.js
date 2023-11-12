@@ -1,6 +1,6 @@
 const UserModel = require("../models/userModel");
 const createNewUser = require("../middleware/mongodb/createNewUser");
-const generateUid = require("../utils/generateUid");
+const generateMongoId = require("../utils/generateMongoId");
 
 
 const auth = async (req, res) => {
@@ -10,7 +10,7 @@ const auth = async (req, res) => {
         let user = await UserModel.findOne({email});
 
         if (!user) {
-            const newUserMongoId = generateUid(32);
+            const newUserMongoId = generateMongoId(32);
 
             user = await createNewUser(newUserMongoId, firebaseUid, email, loginMethod);
 
