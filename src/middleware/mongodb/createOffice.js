@@ -6,6 +6,7 @@ const createOffice = async (
     officeImageUrl,
     address,
     locationId,
+    officeMemberId,
     divisionId,
     shiftId,
 ) => {
@@ -15,6 +16,7 @@ const createOffice = async (
         officeImageUrl: officeImageUrl,
         address: address,
         locationId: locationId,
+        officeMemberId: officeMemberId,
         divisionId: divisionId,
         shiftId: shiftId,
     });
