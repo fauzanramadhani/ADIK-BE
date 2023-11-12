@@ -2,7 +2,6 @@ const createLocation = require("../middleware/mongodb/createLocation");
 const createDivision = require("../middleware/mongodb/createDivision");
 const createOfficeMember = require("../middleware/mongodb/createOfficeMember");
 const createOffice = require("../middleware/mongodb/createOffice");
-const createShift = require("../middleware/mongodb/createNewShift");
 const generateOfficeId = require("../utils/generateOfficeId");
 const generateUid = require("../utils/generateUid");
 const UserModel = require("../models/usersModel");
@@ -63,21 +62,6 @@ const createOfficeController = async (req, res) => {
             officeId: newOfficeId,
         });
 
-        // Menambahkan semua shift kedalam tb_shift
-        const newShiftId = await Promise.all(shift.map(async (shift, index) => {
-            const newId = generateUid(32);
-            const newShift = await createShift({
-                shiftId: newId,
-                name: shift.name,
-                checkInHourStart: shift.checkInHourStart,
-                checkInHourEnd: shift.checkInHourEnd,
-                checkOutHourStart: shift.checkOutHourStart,
-                checkOutHourEnd: shift.checkOutHourEnd,
-                officeId: newOfficeId,
-            });
-            return newShift._id;
-        }));
-
         // Menambahkan kantor ke tb_office
         const newOffice = await createOffice(
             newOfficeId,
@@ -87,7 +71,6 @@ const createOfficeController = async (req, res) => {
             newLocationId,
             newOfficeMemberId,
             newDivision._id,
-            newShiftId,
         );
 
         // Menambahkan id kentor ke tb_user
