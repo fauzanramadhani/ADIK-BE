@@ -1,4 +1,4 @@
-const UserModel = require("../../models/usersModel");
+const UserModel = require("../../models/userModel");
 
 const checkAuth = async (req, res, next) => {
     try {
@@ -8,9 +8,9 @@ const checkAuth = async (req, res, next) => {
             throw new Error("You must be logged in");
         }
 
-        const mongoId = authorization.replace("Bearer ", "");
+        const userMongoId = authorization.replace("Bearer ", "");
 
-        const user = await UserModel.findOne({_id: mongoId});
+        const user = await UserModel.findOne({_id: userMongoId});
 
         if (!user) {
             throw new Error("User not found");
@@ -20,7 +20,6 @@ const checkAuth = async (req, res, next) => {
 
         next();
     } catch (error) {
-        console.log(error);
         return res.status(400).json({
             status: "error",
             message: error.message,
