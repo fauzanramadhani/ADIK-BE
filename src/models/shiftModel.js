@@ -5,10 +5,6 @@ const shiftSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    createdAt: {
-        type: String,
-        default: new Date().toISOString(),
-    },
     name: {
         type: String,
     },
@@ -27,8 +23,13 @@ const shiftSchema = new mongoose.Schema({
     officeId: {
         type: String,
     },
+    createdAt: {
+        type: String,
+        default: new Date().toISOString(),
+    },
 });
 
 const ShiftModel = mongoose.model("tb_shift", shiftSchema);
+
 
 module.exports = ShiftModel;

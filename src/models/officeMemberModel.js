@@ -5,10 +5,6 @@ const officeMemberSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    createdAt: {
-        type: String,
-        default: new Date().toISOString(),
-    },
     role: {
         type: String,
     },
@@ -24,8 +20,13 @@ const officeMemberSchema = new mongoose.Schema({
     attendanceId: {
         type: Array,
     },
+    createdAt: {
+        type: String,
+        default: new Date().toISOString(),
+    },
 });
 
 const OfficeMemberModel = mongoose.model("tb_office_member", officeMemberSchema);
+
 
 module.exports = OfficeMemberModel;

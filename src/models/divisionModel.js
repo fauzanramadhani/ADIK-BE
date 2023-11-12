@@ -5,18 +5,19 @@ const divisionSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    createdAt: {
-        type: String,
-        default: new Date().toISOString(),
-    },
     name: {
         type: String,
     },
     officeId: {
         type: String,
     },
+    createdAt: {
+        type: String,
+        default: new Date().toISOString(),
+    },
 });
 
 const DivisionModel = mongoose.model("tb_division", divisionSchema);
+
 
 module.exports = DivisionModel;
