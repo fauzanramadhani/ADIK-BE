@@ -4,7 +4,7 @@ const router = express.Router();
 const officeController = require("../controllers/officeController");
 const checkAuth = require("../middleware/mongodb/checkAuth");
 
-router.post("/create", checkAuth, officeController.createOfficeController);
+router.post("/create", checkAuth, officeController.createOffice);
 
 
 module.exports = router;
