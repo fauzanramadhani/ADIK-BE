@@ -4,9 +4,8 @@ const generateMongoId = require("../utils/generateMongoId");
 
 
 const auth = async (req, res) => {
-    const {firebaseUid, email, loginMethod} = req.body;
-
     try {
+        const {firebaseUid, email, loginMethod} = req.body;
         let user = await UserModel.findOne({email});
 
         if (!user) {

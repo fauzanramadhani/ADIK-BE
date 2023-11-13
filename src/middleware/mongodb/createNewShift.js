@@ -1,6 +1,6 @@
 const ShiftModel = require("../../models/shiftModel");
 
-const createShift = async ({
+const createNewShift = async ({
     shiftId,
     name,
     checkInHourStart,
@@ -9,17 +9,20 @@ const createShift = async ({
     checkOutHourEnd,
     officeId,
 }) => {
+    const createdAt = new Date().toISOString();
     const newShift = new ShiftModel({
         _id: shiftId,
-        name: name,
-        checkInHourStart: checkInHourStart,
-        checkInHourEnd: checkInHourEnd,
-        checkOutHourStart: checkOutHourStart,
-        checkOutHourEnd: checkOutHourEnd,
-        officeId: officeId,
+        name,
+        checkInHourStart,
+        checkInHourEnd,
+        checkOutHourStart,
+        checkOutHourEnd,
+        officeId,
+        createdAt,
     });
     await newShift.save();
     return newShift;
 };
 
-module.exports = createShift;
+
+module.exports = createNewShift;

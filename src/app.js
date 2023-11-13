@@ -6,8 +6,9 @@ const app = express();
 
 const authRoute = require("./routes/authRoute");
 const profileRoute = require("./routes/profileRoute");
-const getImageProfile = require("../accessImgProfile");
 const officeRoute = require("./routes/officeRoute");
+
+const getImageProfile = require("../accessImgProfile");
 
 app.use(cors());
 app.use(bodyParser.json());
