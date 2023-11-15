@@ -5,21 +5,20 @@ const createNewOffice = async (
     name,
     officeImageUrl,
     address,
-    locationId,
+    officeInvCodeId,
     officeMemberId,
     divisionId,
-    shiftId,
 ) => {
     const createdAt = new Date().toISOString();
     const newOffice = new OfficesModel({
         _id: officeId,
         name,
         officeImageUrl,
+        officeInvCodeId,
         address,
-        locationId: [locationId],
+        officeInvCodeId,
         officeMemberId: [officeMemberId],
         divisionId: [divisionId],
-        shiftId: [shiftId],
         createdAt,
     });
     await newOffice.save();
