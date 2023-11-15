@@ -1,25 +1,25 @@
 const UserModel = require("../models/userModel");
+const createNewOfficeInvCode = require("../middleware/mongodb/createOfficeInvCode");
 const createNewOffice = require("../middleware/mongodb/createNewOffice");
 const createNewOfficeMember = require("../middleware/mongodb/createNewOfficeMember");
-const createNewLocation = require("../middleware/mongodb/createNewLocation");
 const createNewDivision = require("../middleware/mongodb/createNewDivision");
 const generateMongoId = require("../utils/generateMongoId");
-const generateOfficeId = require("../utils/generateOfficeId");
-
+const generateOfficeInvCode = require("../utils/generateOfficeInvCode");
 
 const createOffice = async (req, res) => {
     try {
-        const {name, officeImageUrl, address, location, ownerDivision, division} = req.body;
+        const {name, officeImageUrl, address, ownerDivision, division} = req.body;
         const userMongoId = req.user._id;
-
-        const newOfficeId = generateOfficeId();
+        const newOfficeId = generateMongoId(32);
         const newOfficeMemberId = generateMongoId(32);
+        const newOfficeInvCodeId = generateMongoId(32);
+        const newOfficeInvCode = generateOfficeInvCode();
 
-        const newLocationIds = await Promise.all(location.map(async (loc) => {
-            const newId = generateMongoId(32);
-            const newLocation = await createNewLocation(newId, loc.latitude, loc.longitude);
-            return newLocation._id;
-        }));
+        await createNewOfficeInvCode({
+            officeInvCodeId: newOfficeInvCodeId,
+            officeInvCode: newOfficeInvCode,
+            officeId: newOfficeId,
+        });
 
         const newDivisions = await Promise.all(division.map(async (div) => {
             const newId = generateMongoId(32);
@@ -31,6 +31,7 @@ const createOffice = async (req, res) => {
         await createNewOfficeMember({
             officeMemberId: newOfficeMemberId,
             role: "Owner",
+            isOut: false,
             userId: userMongoId,
             divisionId: ownerDivisionObject._id,
             officeId: newOfficeId,
@@ -41,9 +42,9 @@ const createOffice = async (req, res) => {
             name,
             officeImageUrl,
             address,
-            newLocationIds,
+            newOfficeInvCodeId,
             newOfficeMemberId,
-            ownerDivisionObject._id,
+            newDivisions.map((div) => div._id),
         );
 
         await UserModel.findByIdAndUpdate(

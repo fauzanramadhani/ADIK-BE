@@ -14,6 +14,9 @@ const officeSchema = new mongoose.Schema({
     address: {
         type: String,
     },
+    officeInvCodeId: {
+        type: String,
+    },
     locationId: {
         type: Array,
     },

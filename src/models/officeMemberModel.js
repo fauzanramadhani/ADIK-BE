@@ -8,6 +8,9 @@ const officeMemberSchema = new mongoose.Schema({
     role: {
         type: String,
     },
+    isOut: {
+        type: Boolean,
+    },
     userId: {
         type: String,
     },

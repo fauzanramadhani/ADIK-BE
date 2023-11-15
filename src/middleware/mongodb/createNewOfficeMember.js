@@ -3,6 +3,7 @@ const OfficeMemberModel = require("../../models/officeMemberModel");
 const createNewOfficeMember = async ({
     officeMemberId,
     role,
+    isOut,
     userId,
     divisionId,
     officeId,
@@ -11,6 +12,7 @@ const createNewOfficeMember = async ({
     const newOfficeMember = new OfficeMemberModel({
         _id: officeMemberId,
         role,
+        isOut,
         userId,
         divisionId,
         officeId,
