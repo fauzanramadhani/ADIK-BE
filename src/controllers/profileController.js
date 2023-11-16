@@ -14,7 +14,6 @@ const getProfile = async (req, res) => {
                 name: user.name,
                 phoneNumber: user.phoneNumber,
                 address: user.address,
-                officeId: user.officeId,
                 createdAt: user.createdAt,
             },
         });
