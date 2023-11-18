@@ -10,6 +10,7 @@ const getProfile = async (req, res) => {
             status: "success",
             message: "Get user profile successfully",
             data: {
+                email: user.email,
                 imageProfileUrl: user.imageProfileUrl,
                 name: user.name,
                 phoneNumber: user.phoneNumber,
