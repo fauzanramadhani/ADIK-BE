@@ -4,7 +4,7 @@ const generateOfficeInvCode = () => {
 
     let oId = "";
     for (let i = 0; i < 12; i++) {
-        const isNumeric = Math.random() < 0.5; // 50% kesempatan numerik
+        const isNumeric = Math.random() < 0.5;
         const keys = isNumeric ? numbers : alphabet;
         const randomIndex = Math.floor(Math.random() * keys.length);
         oId += keys[randomIndex];
@@ -13,5 +13,6 @@ const generateOfficeInvCode = () => {
 
     return oId;
 };
+
 
 module.exports = generateOfficeInvCode;
