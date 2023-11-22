@@ -21,7 +21,7 @@ const auth = async (req, res) => {
                 },
             });
         } else {
-            if (!user.loginMethod.includes(loginMethod)) {
+            if (!user.firebaseUid.includes(firebaseUid)) {
                 user.firebaseUid.push(firebaseUid);
                 user.loginMethod.push(loginMethod);
                 await user.save();
