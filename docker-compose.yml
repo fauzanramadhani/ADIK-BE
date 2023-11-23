@@ -13,6 +13,7 @@ services:
     restart: always
     volumes:
       - .:/usr/src/app/
+      - /usr/src/app/user
       - /usr/src/app/node_modules
     depends_on:
       - mongodb

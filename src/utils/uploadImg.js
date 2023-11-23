@@ -37,5 +37,42 @@ const upload = multer({
     },
 });
 
+const imageStorage = ({
+    dir,
+    fileName,
+}) => multer.diskStorage({
+    destination: (req, file, cb) => {
+        fs.mkdirSync(dir, {recursive: true});
+        cb(null, dir);
+    },
+    filename: (req, file, cb) => {
+        fs.readdirSync(dir).forEach((existingFile) => {
+            fs.unlinkSync(path.join(dir, existingFile));
+        });
+        cb(null, `${fileName}${file.mimetype.replace("image/", ".")}`);
+    },
+});
 
-module.exports = upload;
+const uploadImage = ({
+    storage,
+}) => multer({
+    storage: storage,
+    limits: {
+        fileSize: 1024 * 1024 * 2,
+    },
+    fileFilter: (req, file, cb) => {
+        const fileTypes = /jpeg|jpg|png/;
+        const extName = fileTypes.test(
+            path.extname(file.originalname).toLowerCase(),
+        );
+        const mimeType = fileTypes.test(file.mimetype);
+        if (extName && mimeType) {
+            cb(null, true);
+        } else {
+            cb(new Error("Only support .jpeg, .jpg, .png"));
+        }
+    },
+});
+
+
+module.exports = {upload, imageStorage, uploadImage};

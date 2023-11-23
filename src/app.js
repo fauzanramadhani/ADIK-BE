@@ -21,7 +21,6 @@ app.get("/", (req, res) => {
 
 app.get("/public/images/default/:filename", (req, res) => {
     const {filename} = req.params;
-
     return res.sendFile(__dirname + "/public/images/default/" + filename);
 });
 
