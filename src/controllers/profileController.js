@@ -1,5 +1,5 @@
 require("dotenv").config();
-const upload = require("../utils/uploadImg");
+const {upload, imageStorage, uploadImage} = require("../utils/uploadImg");
 
 
 const getProfile = async (req, res) => {
@@ -89,5 +89,65 @@ const uploadProfileImg = async (req, res) => {
     }
 };
 
+const putProfileImage = async (req, res) => {
+    try {
+        const storage = imageStorage({
+            dir: `user/profile/image/${req.user._id}`,
+            fileName: `${Date.now()}`,
+        });
+        const uploadNew = uploadImage({
+            storage: storage,
+        });
+        uploadNew.single("imageProfile")(req, res, async (error) => {
+            if (error) {
+                return res.status(400).json({
+                    status: "error",
+                    message: error.message,
+                });
+            }
 
-module.exports = {getProfile, putProfile, uploadProfileImg};
+            const {file} = req;
+            const user = req.user;
+
+            if (!file) {
+                return res.status(400).json({
+                    status: "error",
+                    message: "Please upload an image",
+                });
+            }
+
+            user.imageProfileUrl = `${process.env.BASE_URL}${file.path.replace("src/", "")}`;
+
+            await user.save();
+
+            return res.status(200).json({
+                status: "success",
+                message: "User profile image updated successfully",
+                data: {
+                    imageProfileUrl: user.imageProfileUrl,
+                },
+            });
+        });
+    } catch (error) {
+        return res.status(400).json({
+            status: "error",
+            message: error.message,
+        });
+    }
+};
+
+const getImageProfile = (req, res) => {
+    try {
+        const {userMongoId, filename} = req.params;
+        console.log(userMongoId);
+        return res.sendFile(`/usr/src/app/user/profile/image/${userMongoId}/${filename}`);
+    } catch (error) {
+        return res.status(400).json({
+            status: "error",
+            message: error.message,
+        });
+    }
+};
+
+
+module.exports = {getProfile, putProfile, uploadProfileImg, putProfileImage, getImageProfile};
