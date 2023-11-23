@@ -51,7 +51,7 @@ const putProfile = async (req, res) => {
 
 const uploadProfileImg = async (req, res) => {
     try {
-        upload.single("imageProfileUrl")(req, res, async (error) => {
+        upload.single("imageProfile")(req, res, async (error) => {
             if (error) {
                 return res.status(400).json({
                     status: "error",
