@@ -62,7 +62,12 @@ const uploadProfileImg = async (req, res) => {
             const {file} = req;
             const user = req.user;
 
-            if (file) {
+            if (!file) {
+                return res.status(400).json({
+                    status: "error",
+                    message: "Please upload an image",
+                });
+            } else {
                 user.imageProfileUrl = process.env.BASE_URL + file.path.replace("src/", "");
             }
 
