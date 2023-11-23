@@ -1,5 +1,6 @@
 require("dotenv").config();
 const {upload, imageStorage, uploadImage} = require("../utils/uploadImg");
+const fs = require("fs");
 
 
 const getProfile = async (req, res) => {
@@ -135,14 +136,23 @@ const putProfileImage = async (req, res) => {
         });
     }
 };
-
 const getImageProfile = (req, res) => {
     try {
         const {userMongoId, filename} = req.params;
-        console.log(userMongoId);
-        return res.sendFile(`/usr/src/app/user/profile/image/${userMongoId}/${filename}`);
+        const imagePath = `/usr/src/app/user/profile/image/${userMongoId}/${filename}`;
+
+        fs.access(imagePath, fs.constants.F_OK, (err) => {
+            if (err) {
+                return res.status(400).json({
+                    status: "error",
+                    message: "Image Not Found",
+                });
+            }
+
+            res.sendFile(imagePath);
+        });
     } catch (error) {
-        return res.status(400).json({
+        return res.status(500).json({
             status: "error",
             message: error.message,
         });
