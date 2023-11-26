@@ -37,10 +37,7 @@ const upload = multer({
     },
 });
 
-const imageStorage = ({
-    dir,
-    fileName,
-}) => multer.diskStorage({
+const imageStorage = ({dir, fileName}) => multer.diskStorage({
     destination: (req, file, cb) => {
         fs.mkdirSync(dir, {recursive: true});
         cb(null, dir);
@@ -53,9 +50,7 @@ const imageStorage = ({
     },
 });
 
-const uploadImage = ({
-    storage,
-}) => multer({
+const uploadImage = ({storage}) => multer({
     storage: storage,
     limits: {
         fileSize: 1024 * 1024 * 2,

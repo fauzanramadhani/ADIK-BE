@@ -96,9 +96,11 @@ const putProfileImage = async (req, res) => {
             dir: `user/profile/image/${req.user._id}`,
             fileName: `${Date.now()}`,
         });
+
         const uploadNew = uploadImage({
             storage: storage,
         });
+
         uploadNew.single("imageProfile")(req, res, async (error) => {
             if (error) {
                 return res.status(400).json({
@@ -115,9 +117,9 @@ const putProfileImage = async (req, res) => {
                     status: "error",
                     message: "Please upload an image",
                 });
+            } else {
+                user.imageProfileUrl = process.env.BASE_URL + file.path.replace("src/", "");
             }
-
-            user.imageProfileUrl = `${process.env.BASE_URL}${file.path.replace("src/", "")}`;
 
             await user.save();
 
@@ -136,6 +138,7 @@ const putProfileImage = async (req, res) => {
         });
     }
 };
+
 const getImageProfile = (req, res) => {
     try {
         const {userMongoId, filename} = req.params;
