@@ -8,7 +8,6 @@ const createNewOfficeMember = async ({
     divisionId,
     officeId,
 }) => {
-    const createdAt = new Date().toISOString();
     const newOfficeMember = new OfficeMemberModel({
         _id: officeMemberId,
         role,
@@ -16,7 +15,6 @@ const createNewOfficeMember = async ({
         userId,
         divisionId,
         officeId,
-        createdAt,
     });
     await newOfficeMember.save();
     return newOfficeMember;
