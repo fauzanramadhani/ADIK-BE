@@ -11,8 +11,8 @@ const officeRoute = require("./routes/officeRoute");
 const getImageProfile = require("../accessImgProfile");
 
 app.use(cors());
-app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
 
 // Home route
 app.get("/", (req, res) => {

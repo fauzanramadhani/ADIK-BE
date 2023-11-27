@@ -29,12 +29,14 @@ const userSchema = new mongoose.Schema({
     address: {
         type: String,
     },
+    paymentId: {
+        type: Array,
+    },
     officeId: {
         type: Array,
     },
     createdAt: {
         type: String,
-        default: new Date().toISOString(),
     },
 });
 

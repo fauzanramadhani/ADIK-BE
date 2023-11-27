@@ -1,5 +1,6 @@
 node_modules/
-upload/
-.env
+uploads/
+user/
 .eslintrc.json
 .gitignore
+NDC-ADIK-DEVELOP.pem

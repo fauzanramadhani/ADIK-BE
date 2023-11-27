@@ -32,6 +32,9 @@ const officeSchema = new mongoose.Schema({
     shiftId: {
         type: Array,
     },
+    subscriptionId: {
+        type: String,
+    },
     createdAt: {
         type: String,
         default: new Date().toISOString(),

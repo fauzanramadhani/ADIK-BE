@@ -1,6 +1,6 @@
 const OfficesModel = require("../../models/officeModel");
 
-const createNewOffice = async (
+const createNewOffice = async ({
     officeId,
     name,
     officeImageUrl,
@@ -8,7 +8,8 @@ const createNewOffice = async (
     officeInvCodeId,
     officeMemberId,
     divisionId,
-) => {
+    subscriptionId,
+}) => {
     const createdAt = new Date().toISOString();
     const newOffice = new OfficesModel({
         _id: officeId,
@@ -19,6 +20,7 @@ const createNewOffice = async (
         officeInvCodeId,
         officeMemberId: [officeMemberId],
         divisionId: [divisionId],
+        subscriptionId,
         createdAt,
     });
     await newOffice.save();
