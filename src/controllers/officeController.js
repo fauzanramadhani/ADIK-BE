@@ -15,7 +15,7 @@ const fs = require("fs");
 const createOffice = async (req, res) => {
     try {
         const {name, address, division} = req.body;
-        const userMongoId = req.user._id;
+        const userMongoId = req.user.id;
         const newOfficeId = generateMongoId(32);
         const newOfficeMemberId = generateMongoId(32);
         const newOfficeInvCodeId = generateMongoId(32);
@@ -49,7 +49,7 @@ const createOffice = async (req, res) => {
             providerFee: 0,
             subTotal: 0,
             officeMemberId: newOfficeMemberId,
-            userId: req.user._id,
+            userId: userMongoId,
             officeId: newOfficeId,
         });
 
