@@ -131,6 +131,7 @@ dist
 
 # uploads
 uploads/
+office/
 
 # SSH
 NDC-ADIK-DEVELOP.pem

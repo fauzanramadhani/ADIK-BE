@@ -12,6 +12,55 @@ const generateOfficeInvCode = require("../utils/generateOfficeInvCode");
 const {imageStorage, uploadImage} = require("../utils/uploadImg");
 const fs = require("fs");
 
+
+const getOffice = async (req, res) => {
+    try {
+        const userMongoId = req.user.id;
+        const user = await UserModel.findOne({_id: userMongoId});
+        if (!user) {
+            throw new Error("User Not Found");
+        }
+        const office = await OfficeModel.findOne({_id: user.officeId});
+        if (!office) {
+            throw new Error("Office Not Found");
+        }
+        const officeMember = await OfficeMemberModel.findOne({
+            userId: userMongoId,
+            officeId: office._id,
+        });
+        if (!officeMember) {
+            throw new Error("You is not the member of this office");
+        }
+        if (officeMember.role != "owner") {
+            throw new Error("You is not the owner of this office");
+        }
+        const checkRole = officeMember.role == "owner";
+
+        return res.status(200).json({
+            status: "success",
+            message: "Office found successfully",
+            data: {
+                officeId: office._id,
+                isOwner: checkRole,
+                name: office.name,
+                officeImageUrl: office.officeImageUrl,
+                address: office.address,
+                officeInvCode: office.officeInvCodeId.officeInvCode,
+                locationId: office.locationId,
+                rankingId: office.rankingId,
+                divisions: office.divisionId,
+                shiftId: office.shiftId,
+                subscriptionId: office.subscriptionId,
+            },
+        });
+    } catch (error) {
+        return res.status(400).json({
+            status: "error",
+            message: error.message,
+        });
+    }
+};
+
 const createOffice = async (req, res) => {
     try {
         const {name, address, division} = req.body;
@@ -182,4 +231,4 @@ const getImageOffice = (req, res) => {
 };
 
 
-module.exports = {createOffice, putImageOffice, getImageOffice};
+module.exports = {getOffice, createOffice, putImageOffice, getImageOffice};
