@@ -81,7 +81,7 @@ const createOffice = async (req, res) => {
 
         const newDivisions = await Promise.all(division.map(async (div) => {
             const newId = generateMongoId(32);
-            return await createNewDivision(newId, div.name, newOfficeId);
+            return await createNewDivision(newId, div, newOfficeId);
         }));
 
         await createNewOfficeMember({
