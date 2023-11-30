@@ -196,7 +196,7 @@ const putImageOffice = async (req, res) => {
                 status: "success",
                 message: "Office image updated successfully",
                 data: {
-                    imageOfficeUrl: office.officeImageUrl,
+                    officeImageUrl: office.officeImageUrl,
                 },
             });
         });
