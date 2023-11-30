@@ -13,20 +13,21 @@ const {imageStorage, uploadImage} = require("../utils/uploadImg");
 const fs = require("fs");
 
 
-const getOffice = async (req, res) => {
+const getOfficeById = async (req, res) => {
     try {
         const userMongoId = req.user.id;
+        const officeId = req.params.officeId;
         const user = await UserModel.findOne({_id: userMongoId});
         if (!user) {
             throw new Error("User Not Found");
         }
-        const office = await OfficeModel.findOne({_id: user.officeId});
+        const office = await OfficeModel.findOne({_id: officeId});
         if (!office) {
             throw new Error("Office Not Found");
         }
         const officeMember = await OfficeMemberModel.findOne({
             userId: userMongoId,
-            officeId: office._id,
+            officeId: officeId,
         });
         if (!officeMember) {
             throw new Error("You is not the member of this office");
@@ -231,4 +232,4 @@ const getImageOffice = (req, res) => {
 };
 
 
-module.exports = {getOffice, createOffice, putImageOffice, getImageOffice};
+module.exports = {getOfficeById, createOffice, putImageOffice, getImageOffice};
