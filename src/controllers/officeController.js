@@ -1,6 +1,7 @@
 const UserModel = require("../models/userModel");
 const OfficeModel = require("../models/officeModel");
 const OfficeMemberModel = require("../models/officeMemberModel");
+const SubscriptionModel = require("../models/subscriptionModel");
 const createNewOfficeInvCode = require("../middleware/mongodb/createOfficeInvCode");
 const createNewOffice = require("../middleware/mongodb/createNewOffice");
 const createNewOfficeMember = require("../middleware/mongodb/createNewOfficeMember");
@@ -37,6 +38,10 @@ const getOfficeById = async (req, res) => {
         }
         const checkRole = officeMember.role == "owner";
 
+        const activeSubscription = await SubscriptionModel.findOne({
+            status: true,
+        });
+
         return res.status(200).json({
             status: "success",
             message: "Office found successfully",
@@ -52,6 +57,8 @@ const getOfficeById = async (req, res) => {
                 divisions: office.divisionId,
                 shiftId: office.shiftId,
                 subscriptionId: office.subscriptionId,
+                activeSubscriptionId: activeSubscription._id,
+                createdAt: office.createdAt,
             },
         });
     } catch (error) {

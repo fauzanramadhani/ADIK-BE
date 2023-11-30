@@ -33,7 +33,7 @@ const officeSchema = new mongoose.Schema({
         type: Array,
     },
     subscriptionId: {
-        type: String,
+        type: Array,
     },
     createdAt: {
         type: String,
