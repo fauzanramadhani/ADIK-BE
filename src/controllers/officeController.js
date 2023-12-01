@@ -1,7 +1,7 @@
 const UserModel = require("../models/userModel");
 const OfficeModel = require("../models/officeModel");
 const OfficeMemberModel = require("../models/officeMemberModel");
-const SubscriptionModel = require("../models/subscriptionModel");
+const DivisionModel = require("../models/divisionModel");
 const createNewOfficeInvCode = require("../middleware/mongodb/createOfficeInvCode");
 const createNewOffice = require("../middleware/mongodb/createNewOffice");
 const createNewOfficeMember = require("../middleware/mongodb/createNewOfficeMember");
@@ -14,7 +14,7 @@ const {imageStorage, uploadImage} = require("../utils/uploadImg");
 const fs = require("fs");
 
 
-const getOfficeById = async (req, res) => {
+const getMyOfficeById = async (req, res) => {
     try {
         const userMongoId = req.user.id;
         const officeId = req.params.officeId;
@@ -31,34 +31,27 @@ const getOfficeById = async (req, res) => {
             officeId: officeId,
         });
         if (!officeMember) {
-            throw new Error("You is not the member of this office");
+            throw new Error("You are not the member of this office");
         }
-        if (officeMember.role != "owner") {
-            throw new Error("You is not the owner of this office");
-        }
-        const checkRole = officeMember.role == "owner";
 
-        const activeSubscription = await SubscriptionModel.findOne({
-            status: true,
-        });
+        let myDivision = undefined;
+        if (officeMember.divisionId) {
+            const getMyDivision = await DivisionModel.findOne({
+                _id: officeMember.divisionId,
+            });
+            myDivision = getMyDivision.name;
+        }
 
         return res.status(200).json({
             status: "success",
-            message: "Office found successfully",
+            message: "Get office successfully",
             data: {
                 officeId: office._id,
-                isOwner: checkRole,
+                role: officeMember.role,
                 name: office.name,
                 officeImageUrl: office.officeImageUrl,
                 address: office.address,
-                officeInvCode: office.officeInvCodeId.officeInvCode,
-                locationId: office.locationId,
-                rankingId: office.rankingId,
-                divisions: office.divisionId,
-                shiftId: office.shiftId,
-                subscriptionId: office.subscriptionId,
-                activeSubscriptionId: activeSubscription._id,
-                createdAt: office.createdAt,
+                division: myDivision,
             },
         });
     } catch (error) {
@@ -258,4 +251,4 @@ const getImageOffice = (req, res) => {
 };
 
 
-module.exports = {getOfficeById, createOffice, putImageOffice, getImageOffice, getMyOfficeId};
+module.exports = {getMyOfficeById, createOffice, putImageOffice, getImageOffice, getMyOfficeId};
