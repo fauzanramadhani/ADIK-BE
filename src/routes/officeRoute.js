@@ -8,6 +8,7 @@ router.get("/:officeId", checkAuth, officeController.getOfficeById);
 router.post("/create", checkAuth, officeController.createOffice);
 router.put("/image/:officeId", checkAuth, officeController.putImageOffice);
 router.get("/image/:officeId/:filename", officeController.getImageOffice);
+router.get("/", checkAuth, officeController.getMyOfficeId);
 
 
 module.exports = router;

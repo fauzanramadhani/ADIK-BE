@@ -10,5 +10,4 @@ router.put("/profile", checkAuth, profileController.putProfile);
 router.put("/profile/upload-profile-img", checkAuth, profileController.uploadProfileImg);
 router.put("/profile/image", checkAuth, profileController.putProfileImage);
 
-
 module.exports = router;

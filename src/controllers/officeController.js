@@ -69,6 +69,25 @@ const getOfficeById = async (req, res) => {
     }
 };
 
+const getMyOfficeId = (req, res) => {
+    try {
+        const user = req.user;
+
+        return res.status(200).json({
+            status: "success",
+            message: "Get my office id successfully",
+            data: {
+                officeId: user.officeId,
+            },
+        });
+    } catch (error) {
+        return res.status(500).json({
+            status: "error",
+            message: error.message,
+        });
+    }
+};
+
 const createOffice = async (req, res) => {
     try {
         const {name, address, division} = req.body;
@@ -239,4 +258,4 @@ const getImageOffice = (req, res) => {
 };
 
 
-module.exports = {getOfficeById, createOffice, putImageOffice, getImageOffice};
+module.exports = {getOfficeById, createOffice, putImageOffice, getImageOffice, getMyOfficeId};
