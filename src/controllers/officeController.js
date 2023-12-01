@@ -69,9 +69,7 @@ const getMyOfficeId = (req, res) => {
         return res.status(200).json({
             status: "success",
             message: "Get my office id successfully",
-            data: {
-                officeId: user.officeId,
-            },
+            data: user.officeId,
         });
     } catch (error) {
         return res.status(500).json({
@@ -214,9 +212,7 @@ const putImageOffice = async (req, res) => {
             return res.status(200).json({
                 status: "success",
                 message: "Office image updated successfully",
-                data: {
-                    officeImageUrl: office.officeImageUrl,
-                },
+                data: office.officeImageUrl,
             });
         });
     } catch (error) {
