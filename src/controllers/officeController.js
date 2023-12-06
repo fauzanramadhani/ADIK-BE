@@ -1,7 +1,13 @@
 const UserModel = require("../models/userModel");
+const OfficeInvCodeModel = require("../models/officeInvCodeModel");
+const LocationModel = require("../models/locationModel");
 const OfficeModel = require("../models/officeModel");
 const OfficeMemberModel = require("../models/officeMemberModel");
+const RankingModel = require("../models/rankingModel");
 const DivisionModel = require("../models/divisionModel");
+const ShiftModel = require("../models/shiftModel");
+const SubscriptionModel = require("../models/subscriptionModel");
+const PaymentModel = require("../models/paymentModel");
 const createNewOfficeInvCode = require("../middleware/mongodb/createOfficeInvCode");
 const createNewOffice = require("../middleware/mongodb/createNewOffice");
 const createNewOfficeMember = require("../middleware/mongodb/createNewOfficeMember");
@@ -104,7 +110,6 @@ const createOffice = async (req, res) => {
         await createNewOfficeMember({
             officeMemberId: newOfficeMemberId,
             role: "owner",
-            isOut: false,
             userId: userMongoId,
             officeId: newOfficeId,
         });
@@ -151,9 +156,7 @@ const createOffice = async (req, res) => {
         return res.status(200).json({
             status: "success",
             message: "Office created successfully",
-            data: {
-                officeId: newOffice._id,
-            },
+            data: newOffice._id,
         });
     } catch (error) {
         return res.status(400).json({
@@ -246,5 +249,131 @@ const getImageOffice = (req, res) => {
     }
 };
 
+const joinOffice = async (req, res) => {
+    try {
+        const {officeInvCode} = req.body;
+        const officeInv = await OfficeInvCodeModel.findOne({
+            officeInvCode: officeInvCode,
+        });
+        if (!officeInv) {
+            throw new Error("Invitation Code is Invalid");
+        }
+        const office = await OfficeModel.findById(officeInv.officeId);
+        if (!office) {
+            throw new Error("Office not found");
+        }
+        if (req.user.officeId.includes(office._id)) {
+            throw new Error("You already in this office");
+        };
+        const newOfficeMemberId = generateMongoId(32);
+        await OfficeModel.findByIdAndUpdate(
+            office._id,
+            {$push: {
+                officeMemberId: newOfficeMemberId,
+            }},
+            {new: true},
+        );
+        await UserModel.findByIdAndUpdate(
+            req.user._id,
+            {$push: {
+                officeId: office._id,
+            }},
+            {new: true},
+        );
+        await createNewOfficeMember({
+            officeMemberId: newOfficeMemberId,
+            role: "member",
+            userId: req.user._id,
+            officeId: office._id,
+        });
+        return res.status(200).json({
+            status: "success",
+            message: "Join office successfully",
+            data: office._id,
+        });
+    } catch (error) {
+        return res.status(400).json({
+            status: "error",
+            message: error.message,
+        });
+    };
+};
 
-module.exports = {getMyOfficeById, createOffice, putImageOffice, getImageOffice, getMyOfficeId};
+const exitOffice = async (req, res) => {
+    try {
+        const user = req.user;
+        const {
+            officeId,
+            isDelete,
+            newOwnerOfficeMemberId,
+        } = req.body;
+        const office = await OfficeModel.findOne({_id: officeId});
+        if (!office) {
+            throw new Error("Office Not Found");
+        }
+        const officeMember = await OfficeMemberModel.findOne({
+            userId: user.id,
+            officeId: officeId,
+        });
+        if (!officeMember) {
+            throw new Error("You is not the member of this office");
+        }
+        if (isDelete == "true") {
+        // DELETE
+            if (officeMember.role != "owner") {
+                throw new Error("You is not the owner of this office");
+            };
+            office.officeMemberId.map( async (memberId) => {
+                const getMember = await OfficeMemberModel.findOne({_id: memberId});
+                const member = await UserModel.findOne({_id: getMember.userId});
+                const getOfficeIndex = member.officeId.indexOf(officeId);
+                member.officeId.splice(getOfficeIndex, 1);
+                await member.save();
+            });
+            office.locationId.map( async (locId) => {
+                await LocationModel.deleteOne({_id: locId});
+            });
+            await OfficeMemberModel.deleteMany({officeId: officeId});
+            await OfficeInvCodeModel.deleteMany({officeId: officeId});
+            await RankingModel.deleteMany({officeId: officeId});
+            await DivisionModel.deleteMany({officeId: officeId});
+            await ShiftModel.deleteMany({officeId: officeId});
+            await SubscriptionModel.deleteMany({officeId: officeId});
+            await OfficeModel.deleteOne({_id: officeId});
+            await PaymentModel.deleteMany({officeId: officeId});
+
+            return res.status(200).json({
+                status: "success",
+                message: "Exit and Delete office successfully",
+            });
+        } else {
+            if (officeMember.role == "owner") {
+                // Change office owner
+                const newOwnerOfficeMember = await OfficeMemberModel
+                    .findById(newOwnerOfficeMemberId);
+                if (!newOwnerOfficeMember) {
+                    throw new Error("New owner account not found");
+                }
+                newOwnerOfficeMember.role = "owner";
+                newOwnerOfficeMember.save();
+            };
+            officeMember.role = "-";
+            await officeMember.save();
+            const officeIndex = user.officeId.indexOf(officeId);
+            user.officeId.splice(officeIndex, 1);
+            await user.save();
+            return res.status(200).json({
+                status: "success",
+                message: "Exit office successfully",
+            });
+        };
+    } catch (error) {
+        return res.status(400).json({
+            status: "error",
+            message: error.message,
+        });
+    }
+};
+
+
+module.exports = {getMyOfficeById, createOffice, putImageOffice, getImageOffice, getMyOfficeId, joinOffice, exitOffice};
