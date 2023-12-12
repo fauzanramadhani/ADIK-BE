@@ -375,5 +375,106 @@ const exitOffice = async (req, res) => {
     }
 };
 
+const getOfficeMemberById = async (req, res) => {
+    try {
+        const {officeId} = req.params;
+        const office = await OfficeModel.findOne({_id: officeId});
+        if (!office) {
+            throw new Error("Office Not Found");
+        }
+        const officeMember = await OfficeMemberModel.find({
+            officeId: officeId,
+        });
+        if (!officeMember) {
+            throw new Error("Office Member Not Found");
+        }
+        const officeMemberData = await Promise.all(officeMember.map(async (member) => {
+            const user = await UserModel.findOne({_id: member.userId});
+            return {
+                userId: user._id,
+            };
+        }));
+        return res.status(200).json({
+            status: "success",
+            message: "Get office member successfully",
+            data: officeMemberData,
+        });
+    } catch (error) {
+        return res.status(400).json({
+            status: "error",
+            message: error.message,
+        });
+    };
+};
 
-module.exports = {getMyOfficeById, createOffice, putImageOffice, getImageOffice, getMyOfficeId, joinOffice, exitOffice};
+// getInviteCode by params officeId
+const getInviteCodeById = async (req, res) => {
+    try {
+        const {officeId} = req.params;
+        const office = await OfficeModel.findOne({_id: officeId});
+        if (!office) {
+            throw new Error("Office Not Found");
+        }
+        const officeInvCode = await OfficeInvCodeModel.findOne({
+            officeId: officeId,
+        });
+        if (!officeInvCode) {
+            throw new Error("Office Invitation Code Not Found");
+        }
+        return res.status(200).json({
+            status: "success",
+            message: "Get office invitation code successfully",
+            data: officeInvCode.officeInvCode,
+        });
+    } catch (error) {
+        return res.status(400).json({
+            status: "error",
+            message: error.message,
+        });
+    };
+};
+
+// getOfficeMember by office member id paraam
+const getOfficeMember = async (req, res) => {
+    try {
+        const {officeMemberId} = req.params;
+        const officeMember = await OfficeMemberModel.findOne({
+            _id: officeMemberId,
+        });
+        if (!officeMember) {
+            throw new Error("Office Member Not Found");
+        }
+        const user = await UserModel.findOne({_id: officeMember.userId});
+        if (!user) {
+            throw new Error("User Not Found");
+        }
+        return res.status(200).json({
+            status: "success",
+            message: "Get office member successfully",
+            data: {
+                userId: user._id,
+                name: user.name,
+                email: user.email,
+                role: officeMember.role,
+            },
+        });
+    } catch (error) {
+        return res.status(400).json({
+            status: "error",
+            message: error.message,
+        });
+    };
+};
+
+module.exports = {
+    getMyOfficeById,
+    createOffice,
+    putImageOffice,
+    getImageOffice,
+    getMyOfficeId,
+    joinOffice,
+    exitOffice,
+    getOfficeMemberById,
+    getInviteCodeById,
+    getOfficeMember,
+};
